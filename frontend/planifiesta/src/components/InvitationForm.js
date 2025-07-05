@@ -17,7 +17,7 @@ const createUser = async (data) => {
   return res.json();
 };
 
-const InvitationForm = ({ open, onClose }) => {
+const InvitationForm = ({ open, onClose, onUserCreated }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -53,6 +53,7 @@ const InvitationForm = ({ open, onClose }) => {
       console.log("Invitación creada con éxito");
       reset();
       onClose();
+      if (onUserCreated) onUserCreated();
     } catch (e) {
       console.log("Error al crear la invitación");
     }
