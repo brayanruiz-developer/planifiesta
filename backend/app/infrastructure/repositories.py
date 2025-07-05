@@ -54,3 +54,19 @@ class UserRepository:
                 event_name=u.event.event_name if u.event else None
             ) for u in users
         ]
+
+    def update_user_invitation_state(self, user_id: int, invitation_state: bool) -> User:
+        db_user = self.db.query(UserModel).filter(UserModel.user_id == user_id).first()
+        if not db_user:
+            return None
+        db_user.user_invitation_state = invitation_state
+        self.db.commit()
+        self.db.refresh(db_user)
+        return User(
+            user_id=db_user.user_id,
+            user_name=db_user.user_name,
+            user_invitation_description=db_user.user_invitation_description,
+            user_invitation_state=db_user.user_invitation_state,
+            event_id=db_user.event_id,
+            event_name=db_user.event.event_name if db_user.event else None
+        )

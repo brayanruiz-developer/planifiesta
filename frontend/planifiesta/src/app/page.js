@@ -29,14 +29,19 @@ export default function HomePage() {
   // Reloads the table when creating a user
   const handleUserCreated = () => setReload((r) => !r);
 
-  // Accept/reject action (placeholder)
+  // Accept/reject action (API call)
   const handleAction = (userId, accepted) => {
-    alert(
-      `Usuario ${userId} ${
-        accepted ? "aceptado" : "rechazado"
-      } (implementa la API)`
-    );
-    setReload((r) => !r);
+    fetch(`http://localhost:8000/users/${userId}/invitation_state`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_invitation_state: accepted }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Error actualizando usuario");
+        return res.json();
+      })
+      .then(() => setReload((r) => !r))
+      .catch((err) => alert(err.message));
   };
 
   return (
