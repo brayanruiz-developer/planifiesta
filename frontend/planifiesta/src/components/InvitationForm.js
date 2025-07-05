@@ -64,19 +64,25 @@ const InvitationForm = ({ open, onClose, onUserCreated }) => {
   return (
     <div style={styles.overlay}>
       <div style={styles.modal}>
-        <h2>Crear Invitación</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <h2 style={styles.title}>Crear Invitación</h2>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          style={{ display: "flex", flexDirection: "column", gap: 18 }}
+        >
           <input type="hidden" {...register("user_id")} />
           <input type="hidden" {...register("user_invitation_state")} />
 
           <div style={styles.field}>
-            <label>Evento</label>
+            <label style={styles.label}>Evento</label>
             {loading ? (
               <span>Cargando eventos...</span>
             ) : error ? (
               <span style={styles.error}>Error al cargar eventos</span>
             ) : (
-              <select {...register("event_id", { required: true })}>
+              <select
+                {...register("event_id", { required: true })}
+                style={styles.input}
+              >
                 <option value="">Seleccione un evento</option>
                 {events.map((event) => (
                   <option key={event.event_id} value={event.event_id}>
@@ -91,11 +97,12 @@ const InvitationForm = ({ open, onClose, onUserCreated }) => {
           </div>
 
           <div style={styles.field}>
-            <label>Nombre del usuario</label>
+            <label style={styles.label}>Nombre del usuario</label>
             <input
               type="text"
               maxLength={100}
               {...register("user_name", { required: true, maxLength: 100 })}
+              style={styles.input}
             />
             {errors.user_name && (
               <span style={styles.error}>Nombre del usuario requerido</span>
@@ -103,7 +110,7 @@ const InvitationForm = ({ open, onClose, onUserCreated }) => {
           </div>
 
           <div style={styles.field}>
-            <label>Descripción de la invitación</label>
+            <label style={styles.label}>Descripción de la invitación</label>
             <input
               type="text"
               maxLength={200}
@@ -111,6 +118,7 @@ const InvitationForm = ({ open, onClose, onUserCreated }) => {
                 required: true,
                 maxLength: 200,
               })}
+              style={styles.input}
             />
             {errors.user_invitation_description && (
               <span style={styles.error}>
@@ -119,7 +127,14 @@ const InvitationForm = ({ open, onClose, onUserCreated }) => {
             )}
           </div>
 
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: 12,
+              marginTop: 8,
+            }}
+          >
             <button
               type="button"
               onClick={() => {
@@ -147,43 +162,81 @@ const styles = {
     left: 0,
     width: "100vw",
     height: "100vh",
-    background: "rgba(0,0,0,0.3)",
+    background: "rgba(163, 148, 255, 0.18)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     zIndex: 2000,
+    backdropFilter: "blur(2px)",
   },
   modal: {
-    background: "#fff",
-    borderRadius: 8,
-    padding: 32,
-    minWidth: 350,
-    boxShadow: "0 2px 16px rgba(0,0,0,0.15)",
+    background: "#f3f0ff",
+    borderRadius: 14,
+    padding: 36,
+    minWidth: 370,
+    boxShadow: "0 4px 24px rgba(63,81,181,0.10)",
+    border: "2px solid #a18cd1",
+    maxWidth: 420,
+  },
+  title: {
+    margin: 0,
+    marginBottom: 18,
+    fontSize: "1.7rem",
+    fontWeight: 800,
+    color: "#3f51b5",
+    textAlign: "center",
+    letterSpacing: 1,
   },
   field: {
-    marginBottom: 18,
+    marginBottom: 0,
     display: "flex",
     flexDirection: "column",
     gap: 4,
   },
+  label: {
+    fontWeight: 600,
+    color: "#3f51b5",
+    marginBottom: 2,
+    fontSize: 15,
+  },
+  input: {
+    border: "1.5px solid #a18cd1",
+    borderRadius: 6,
+    padding: "0.5rem 0.8rem",
+    fontSize: 15,
+    outline: "none",
+    marginBottom: 2,
+    background: "#fff",
+    color: "#222",
+    transition: "border 0.2s",
+  },
   error: {
-    color: "#d32f2f",
+    color: "#5e35b1",
     fontSize: 13,
+    marginTop: 2,
   },
   cancel: {
     background: "#eee",
     border: "none",
-    borderRadius: 4,
-    padding: "0.5rem 1.2rem",
+    borderRadius: 6,
+    padding: "0.6rem 1.4rem",
     cursor: "pointer",
+    fontWeight: 600,
+    fontSize: 15,
+    color: "#3f51b5",
+    transition: "background 0.2s, color 0.2s",
   },
   submit: {
-    background: "#0070f3",
+    background: "#3f51b5",
     color: "#fff",
     border: "none",
-    borderRadius: 4,
-    padding: "0.5rem 1.2rem",
+    borderRadius: 6,
+    padding: "0.6rem 1.4rem",
     cursor: "pointer",
+    fontWeight: 700,
+    fontSize: 15,
+    transition: "background 0.2s, color 0.2s",
+    boxShadow: "0 2px 8px rgba(63,81,181,0.08)",
   },
 };
 
