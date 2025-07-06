@@ -81,7 +81,7 @@ const container = {
 };
 const table = {
   width: "100%",
-  maxWidth: 900,
+  maxWidth: 800,
   borderCollapse: "separate",
   borderSpacing: 0,
   background: "#f3f0ff",

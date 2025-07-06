@@ -3,11 +3,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import InvitationForm from "../components/InvitationForm";
 import Header from "../components/Header";
 import UserTable from "../components/UserTable";
+import FinancialStatusForm from "../components/FinancialStatusForm";
+import FinancialStatusTable from "../components/FinancialStatusTable";
 
 export default function HomePage() {
   const [showForm, setShowForm] = useState(false);
   const [users, setUsers] = useState([]);
   const [reload, setReload] = useState(false);
+  const [financialStatus, setFinancialStatus] = useState(null);
+  const [showFinancialForm, setShowFinancialForm] = useState(true);
 
   // Get users from API
   const fetchUsers = useCallback(() => {
@@ -52,7 +56,63 @@ export default function HomePage() {
         onClose={() => setShowForm(false)}
         onUserCreated={handleUserCreated}
       />
-      <UserTable users={users} onAction={handleAction} />
+      <div style={styles.splitContainer}>
+        <div style={styles.leftPanel}>
+          <UserTable users={users} onAction={handleAction} />
+        </div>
+        <div style={styles.rightPanel}>
+          {showFinancialForm ? (
+            <FinancialStatusForm
+              onResult={(data) => {
+                if (data) {
+                  setFinancialStatus(data);
+                  setShowFinancialForm(false);
+                } else {
+                  setFinancialStatus(null);
+                }
+              }}
+            />
+          ) : (
+            <FinancialStatusTable
+              status={financialStatus}
+              onConsultAnotherDay={() => {
+                setShowFinancialForm(true);
+                setFinancialStatus(null);
+              }}
+            />
+          )}
+        </div>
+      </div>
     </main>
   );
 }
+
+const styles = {
+  splitContainer: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 32,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    width: "100%",
+    marginTop: 24,
+    flexWrap: "wrap",
+  },
+  leftPanel: {
+    flex: 1,
+    minWidth: 350,
+    maxWidth: 800,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  rightPanel: {
+    flex: 1,
+    minWidth: 370,
+    maxWidth: 420,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 18,
+  },
+};
